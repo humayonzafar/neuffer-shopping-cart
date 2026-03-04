@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+@theme {
+  --color-brand-blue: #1D3178;
+  --color-brand-green: #19D16F;
+  --color-brand-pink: #FB2E86;
+}
+
+@utility cart-grid {
+  grid-template-columns: 2fr 1fr 1.5fr 1fr;
+}
+
+:root {
+  font-family: "Roboto", sans-serif;
+  scroll-behavior: smooth;
+}
