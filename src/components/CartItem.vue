@@ -1,4 +1,23 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { QuantityActions } from "../types";
+import type { CartItem, QuantityAction } from '../types';
+import { formatPrice } from '../utils';
+import closeIcon from '@/assets/icons/close.svg'
+
+const { cartItem } = defineProps<{
+  cartItem: CartItem
+}>();
+
+const updateCartItemQuantity = (action: QuantityAction) => {
+  cartItem.quantity = action === QuantityActions.increment ?
+    cartItem.quantity + 1 :
+    cartItem.quantity - 1;
+}
+const cartItemTotal = computed(() => {
+  return formatPrice(cartItem.product.price * cartItem.quantity);
+});
+
 </script>
 
 <template>
@@ -7,11 +26,11 @@
     <!-- Column 1: Product image + info -->
     <div class="flex items-center gap-4 mb-3 sm:mb-0 sm:pr-4">
       <div class="relative shrink-0">
-        <div class="w-18 h-18 bg-gray-200 rounded-sm"></div>
-         <img class="absolute -top-2 -left-2 w-5 h-5 " src="/images/icons/remove.svg" alt="rempve" width="24" height="24" />
+        <img class="w-18 h-18 rounded-sm" :src="cartItem.product.image" alt="product_image" />
+        <img :src="closeIcon" class="absolute -top-2 -right-2 w-3 h-3" alt="remove" />
       </div>
       <div>
-        <p class="text-sm font-medium text-gray-800">Ut diam consequat</p>
+        <p class="text-sm font-medium text-gray-800">{{ cartItem.product.title }}</p>
         <p class="text-xs text-gray-400 mt-1">Color: Brown</p>
         <p class="text-xs text-gray-400">Size: XL</p>
       </div>
@@ -23,23 +42,28 @@
       <!-- Price -->
       <div class="text-sm text-gray-700">
         <span class="sm:hidden text-xs text-gray-400 mr-1">Price:</span>
-        $32.00
+        {{ formatPrice(cartItem.product.price) }}
       </div>
 
       <!-- Quantity control -->
       <div class="flex items-center gap-2">
         <span class="sm:hidden text-xs text-gray-400">Qty:</span>
         <div class="flex items-center">
-          <button class="w-7 h-7 border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors">−</button>
-          <span class="w-9 h-7 border-y border-gray-300 flex items-center justify-center text-sm font-medium">1</span>
-          <button class="w-7 h-7 border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors">+</button>
+          <button
+            class="w-7 h-7 border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors"
+            :disabled="cartItem.quantity <= 1" @click="updateCartItemQuantity(QuantityActions.decrement)">−</button>
+          <span class="w-9 h-7 border-y border-gray-300 flex items-center justify-center text-sm font-medium">{{
+            cartItem.quantity }}</span>
+          <button
+            class="w-7 h-7 border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors"
+            @click="updateCartItemQuantity(QuantityActions.increment)">+</button>
         </div>
       </div>
 
       <!-- Total -->
       <div class="text-sm text-gray-700">
         <span class="sm:hidden text-xs text-gray-400 mr-1">Total:</span>
-        £219.00
+        {{ cartItemTotal }}
       </div>
 
     </div>

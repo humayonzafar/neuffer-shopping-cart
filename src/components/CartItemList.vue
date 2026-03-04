@@ -1,5 +1,17 @@
 <script setup lang="ts">
-import CartItem from './CartItem.vue'
+import CartItem from './CartItem.vue';
+import { useCartStore } from '../stores/cartStore';
+import { onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
+
+const store = useCartStore();
+const { fetchCartItems, createCartItem, clearCart } = store;
+const { cartItems } = storeToRefs(store);
+
+onMounted(() => {
+  fetchCartItems();
+});
+
 </script>
 
 <template>
@@ -14,14 +26,19 @@ import CartItem from './CartItem.vue'
     </div>
 
     <!-- Cart items -->
-    <CartItem />
+    <CartItem v-for="cartItem in cartItems" :key="cartItem.product.id" :cart-item=cartItem />
 
     <!-- Action buttons -->
     <div class="flex items-center justify-between mt-6">
-      <button class="px-6 py-2.5 bg-brand-green text-white text-sm font-medium rounded hover:opacity-90 transition-opacity">
+      <button
+        class="px-6 py-2.5 bg-brand-green text-white text-sm font-medium rounded hover:opacity-90 transition-opacity"
+        @click="createCartItem">
         Add Item
       </button>
-      <button class="px-6 py-2.5 bg-brand-pink text-white text-sm font-medium rounded hover:opacity-90 transition-opacity">
+      <button
+        class="px-6 py-2.5 bg-brand-pink text-white text-sm font-medium rounded hover:opacity-90 transition-opacity"
+        @click="clearCart"
+        >
         Clear Cart
       </button>
     </div>
