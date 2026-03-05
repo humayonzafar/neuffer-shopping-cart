@@ -15,7 +15,7 @@ import ShippingCalculator from './components/ShippingCalculator.vue';
           <CartItemList />
         </section>
 
-        <aside class="flex flex-col gap-8">
+        <aside class="flex flex-col gap-6">
            <CartSummary />
            <ShippingCalculator />
         </aside>

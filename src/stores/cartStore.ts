@@ -7,10 +7,11 @@ export const useCartStore = defineStore('cart', () => {
 
     // state
     const cartItems = ref<CartItem[]>([]);
-    const shipping = ref<number>(0);
+    const shipping = ref(0);
     const loading = ref(true);
     const error = ref<string | null>(null);
-    const isAddingItem = ref<boolean>(false);
+    const isAddingItem = ref(false);
+    const isCartChecedkOut = ref(false);
 
     // getters
     const subTotal = computed((): number => {
@@ -46,7 +47,7 @@ export const useCartStore = defineStore('cart', () => {
     const createCartItem = async () => {
         isAddingItem.value = true; 
         try {
-            await new Promise(resolve => setTimeout(resolve, 3000)); // 1s delay timer to stop repated inserts
+            await new Promise(resolve => setTimeout(resolve, 1000)); // 1s delay timer to stop repated inserts
             const data: Product = await createProduct(
                 {
                     title: 'Ut diam consequat',
@@ -72,9 +73,13 @@ export const useCartStore = defineStore('cart', () => {
     const clearCart = (): void => {
         cartItems.value = [];
     }
+    const onCheckout = (): void => {
+        isCartChecedkOut.value = true;
+        clearCart();
+    }
 
     return {
-        cartItems, fetchCartItems, createCartItem, deleteCartItem, clearCart,
+        cartItems, fetchCartItems, createCartItem, deleteCartItem, clearCart, onCheckout, isCartChecedkOut,
         subTotal, shipping, vat, cartTotal,
         isCartEmpty, isAddingItem
     };

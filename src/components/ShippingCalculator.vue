@@ -8,20 +8,20 @@ const { form, isCalculateShippingButtonDisabled , calculateShipping } = useShipp
   <div class="font-lato">
     <h2 class="section-heading text-center mb-4">Calculate Shipping</h2>
 
-    <div class="bg-slate-50 rounded p-5 space-y-5">
-      <div class="border-b border-gray-300 focus-within:border-blue-500 transition-colors">
-        <input v-model.trim="form.city" type="text" placeholder="Berlin"
-          class="w-full bg-transparent text-sm text-gray-800 py-1.5 outline-none placeholder:text-input-placeholder" />
+    <div class="bg-card-bg rounded p-5 space-y-5">
+      <div class="border-b-2  border-navy-500 transition-colors mx-2">
+        <input v-model.trim="form.city" type="text" placeholder="Berlin"  name="city"
+          class="w-full bg-transparent text-sm text-navy-600 py-1.5 outline-none placeholder:text-input-placeholder font-semibold" />
       </div>
 
-      <div class="border-b border-gray-300 focus-within:border-blue-500 transition-colors">
-        <input v-model.trim="form.street" type="text" placeholder="Ostseestraße 79"
-          class="w-full bg-transparent text-sm text-gray-800 py-1.5 outline-none placeholder:text-input-placeholder" />
+      <div class="border-b-2 border-navy-500 transition-colors mx-2">
+        <input v-model.trim="form.street" type="text" placeholder="Ostseestraße 79" name="street"
+          class="w-full bg-transparent text-sm text-navy-600 py-1.5 outline-none placeholder:text-input-placeholder font-semibold" />
       </div>
 
-      <div class="border-b border-gray-300 focus-within:border-blue-500 transition-colors">
-        <input v-model.trim="form.postalCode" type="text" placeholder="10409"
-          class="w-full bg-transparent text-sm text-gray-800 py-1.5 outline-none placeholder:text-input-placeholder" />
+      <div class="border-b-2 border-navy-500 transition-colors mx-2">
+        <input v-model.trim="form.postalCode" type="text" placeholder="10409"  name="postalcode"
+          class="w-full bg-transparent text-sm text-navy-600 py-1.5 outline-none placeholder:text-input-placeholder font-semibold" />
       </div>
 
       <button @click="calculateShipping" :disabled="isCalculateShippingButtonDisabled"

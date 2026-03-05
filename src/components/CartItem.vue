@@ -11,10 +11,13 @@ const { cartItem } = defineProps<{
 }>();
 const { deleteCartItem } = useCartStore();
 const updateCartItemQuantity = (action: QuantityAction): void => {
-  cartItem.quantity = action === QuantityActions.increment ?
-    cartItem.quantity + 1 :
-    cartItem.quantity - 1;
+  if (action === QuantityActions.decrement && cartItem.quantity > 1) {
+    cartItem.quantity -= 1;
+  } else if (action === QuantityActions.increment && cartItem.quantity < 999) {
+    cartItem.quantity += 1;
+  }
 }
+
 const cartItemTotal = computed((): string => {
   return formatPrice(cartItem.product.price * cartItem.quantity);
 });
@@ -51,7 +54,8 @@ const cartItemTotal = computed((): string => {
           <button
             class="w-7 h-7 border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             :disabled="cartItem.quantity <= 1" @click="updateCartItemQuantity(QuantityActions.decrement)">−</button>
-          <span class="w-9 h-7 border-y border-gray-300 flex items-center justify-center text-sm font-medium text-navy-700">
+          <span
+            class="w-9 h-7 border-y border-gray-300 flex items-center justify-center text-sm font-medium text-navy-700">
             {{ cartItem.quantity }}
           </span>
           <button

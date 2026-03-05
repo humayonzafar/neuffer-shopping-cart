@@ -6,7 +6,7 @@ import type { ShippingForm } from '../types'
 const INITIAL_FORM: ShippingForm = { city: '', street: '', postalCode: '' };
 
 export function useShipping() {
-    const { shipping, isCartEmpty } = storeToRefs(useCartStore());
+    const { shipping, isCartEmpty, isCartChecedkOut } = storeToRefs(useCartStore());
     const form = ref<ShippingForm>({ ...INITIAL_FORM });
     const lastCalculated = ref<ShippingForm | null>(null);
     const isFormInvalid = computed((): boolean =>
@@ -15,7 +15,7 @@ export function useShipping() {
         !form.value.postalCode.trim()
     );
     const isCalculateShippingButtonDisabled = computed((): boolean => {
-        if (isFormInvalid.value || isCartEmpty.value) {
+        if (isFormInvalid.value || isCartEmpty.value || isCartChecedkOut.value) {
             return true;  // if any form field is empty or cart is empty disable shipping button
         }
         if (!lastCalculated.value) {
@@ -44,5 +44,5 @@ export function useShipping() {
         }
     });
 
-    return { form, isCalculateShippingButtonDisabled, calculateShipping }
+    return { form, isCalculateShippingButtonDisabled, calculateShipping, isCartChecedkOut }
 }
