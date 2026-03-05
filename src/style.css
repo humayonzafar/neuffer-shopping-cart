@@ -1,16 +1,30 @@
 @import "tailwindcss";
+@import '@/assets/fonts/fonts.css';
+
+@layer base {
+  input::placeholder {
+    font-weight: 600;
+  }
+}
 
 @theme {
-  --color-brand-blue: #1D3178;
+  --font-lato: 'Lato', sans-serif;
+  --color-navy-600: #1D3178;
+  --color-navy-700: #15245E;
   --color-brand-green: #19D16F;
   --color-brand-pink: #FB2E86;
+  --color-input-placeholder: #C5CBE3;
 }
 
 @utility cart-grid {
   grid-template-columns: 2fr 1fr 1.5fr 1fr;
 }
 
+@utility section-heading {
+  @apply text-xl font-bold text-navy-600;
+}
+
 :root {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   scroll-behavior: smooth;
 }

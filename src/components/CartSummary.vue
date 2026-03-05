@@ -2,45 +2,44 @@
 import { storeToRefs } from 'pinia';
 import { useCartStore } from '../stores/cartStore';
 import { formatPrice } from '../utils';
+import { computed } from 'vue';
 
-const store = useCartStore();
-const { subTotal, vat, cartTotal } = storeToRefs(store);
+const { subTotal, vat, shipping, cartTotal } = storeToRefs(useCartStore());
+
+const isProccedToCheckOutDisabled = computed(() => {
+  return !subTotal.value || !shipping.value;
+});
 
 </script>
 
 <template>
-  <div>
-
-    <h2 class="text-lg font-bold text-brand-blue text-center mb-4">Cart Totals</h2>
-
+  <div class="font-lato">
+    <h2 class="section-heading text-center mb-4">Cart Totals</h2>
     <div class="bg-slate-50 rounded p-5 space-y-4">
 
-      <!-- Subtotals -->
       <div class="flex justify-between items-center">
-        <span class="text-sm text-gray-600">Subtotals:</span>
-        <span class="text-sm font-medium text-gray-800">{{formatPrice(subTotal)}}</span>
+        <span class="text-lg text-navy-600 font-semibold">Subtotals:</span>
+        <span class="font-medium text-navy-700">{{ formatPrice(subTotal) }}</span>
       </div>
 
-      <!-- Shipping -->
       <div class="flex justify-between items-center">
-        <span class="text-sm text-blue-500 font-medium">Shipping</span>
-        <span class="text-sm font-medium text-gray-800">£100.00</span>
+        <span class="text-lg text-navy-600 font-semibold">Shipping</span>
+        <span class="font-medium text-navy-700">{{ formatPrice(shipping) }}</span>
       </div>
 
-      <!-- Tax -->
       <div class="flex justify-between items-center">
-        <span class="text-sm text-gray-600">Tax (20%)</span>
-        <span class="text-sm font-medium text-gray-800">{{formatPrice(vat)}}</span>
+        <span class="text-lg text-navy-600 font-semibold">Tax (20%)</span>
+        <span class="font-medium text-navy-700">{{ formatPrice(vat) }}</span>
       </div>
 
-      <!-- Divider + Total -->
       <div class="border-t border-gray-200 pt-4 flex justify-between items-center">
-        <span class="text-sm font-semibold text-gray-700">Totals:</span>
-        <span class="text-base font-bold text-gray-900">{{formatPrice(cartTotal)}}</span>
+        <span class="text-lg font-medium text-navy-600 ">Totals:</span>
+        <span class="text-navy-700">{{ formatPrice(cartTotal) }}</span>
       </div>
 
-      <!-- Checkout button -->
-      <button class="w-full py-3 bg-brand-green text-white text-sm font-medium rounded hover:opacity-90 transition-opacity">
+      <button
+        class="w-full py-3 bg-brand-green text-white text-sm rounded hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed font-bold"
+        :disabled="isProccedToCheckOutDisabled">
         Proceed To Checkout
       </button>
 

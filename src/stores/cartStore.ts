@@ -7,9 +7,10 @@ export const useCartStore = defineStore('cart', () => {
 
     // state
     const cartItems = ref<CartItem[]>([]);
-    const shipping = ref<number>(100);
+    const shipping = ref<number>(0);
     const loading = ref(true);
     const error = ref<string | null>(null);
+    const isAddingItem = ref<boolean>(false);
 
     // getters
     const subTotal = computed((): number => {
@@ -19,13 +20,17 @@ export const useCartStore = defineStore('cart', () => {
         }, 0);
     });
     const vat = computed((): number => {
-        return subTotal.value * 0.2; 
+        return subTotal.value * 0.2;
     });
     const cartTotal = computed((): number => {
-        return subTotal.value + shipping.value + vat.value; 
+        return subTotal.value + shipping.value + vat.value;
+    });
+    const isCartEmpty = computed((): boolean => {
+        return !cartItems.value.length;
     });
 
-     // actions
+
+    // actions
     const fetchCartItems = async () => {
         try {
             const data: Product[] = await fetchProducts();
@@ -38,23 +43,40 @@ export const useCartStore = defineStore('cart', () => {
             loading.value = false;
         }
     };
-
     const createCartItem = async () => {
+        isAddingItem.value = true; 
         try {
-            const data: Product = await createProduct({ title: '1', price: 100 });
-            console.log(data);
+            await new Promise(resolve => setTimeout(resolve, 3000)); // 1s delay timer to stop repated inserts
+            const data: Product = await createProduct(
+                {
+                    title: 'Ut diam consequat',
+                    price: Math.floor(Math.random() * 100) + 1,
+                    category: 'XL',
+                    description: 'none',
+                    image: Math.floor(Math.random() * 2) === 1 ? './images/bag.png' : './images/braclet.png'
+                }
+            );
+            data.id = Date.now(); // just generatnig unique id for each product as api doesn't return it
+            cartItems.value.push({ product: data, quantity: 1 });
         } catch (e) {
             error.value = 'Failed to create';
         } finally {
-            loading.value = false;
+           isAddingItem.value = false;
         }
     };
-
+    const deleteCartItem = (id: number) => {
+        cartItems.value = cartItems.value.filter(item =>
+            item.product.id !== id
+        )
+    }
     const clearCart = (): void => {
         cartItems.value = [];
     }
 
-
-    return { cartItems, fetchCartItems, createCartItem, clearCart, subTotal, vat, cartTotal };
+    return {
+        cartItems, fetchCartItems, createCartItem, deleteCartItem, clearCart,
+        subTotal, shipping, vat, cartTotal,
+        isCartEmpty, isAddingItem
+    };
 
 })

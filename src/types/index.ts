@@ -12,11 +12,16 @@ export interface CartItem {
     quantity: number
 }
 
-export type CreateProductBody = Pick<Product, 'title' | 'price'>;
+export type CreateProductBody = Omit<Product, 'id'>;
  
 export const QuantityActions = {
   increment: 'increment',
   decrement: 'decrement',
 } as const;
-
 export type QuantityAction = (typeof QuantityActions)[keyof typeof QuantityActions];
+
+export type ShippingForm = {
+  city: string
+  street: string
+  postalCode: string
+}
