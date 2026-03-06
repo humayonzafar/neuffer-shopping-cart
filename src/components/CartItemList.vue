@@ -42,6 +42,7 @@ const addItemText = computed(() => {
 
     <div class="flex items-center justify-center sm:justify-between mt-6 flex-wrap gap-2">
       <button
+        aria-label="Add product"
         data-testid="btn-add-item"
         class="px-10 py-2.5 bg-brand-green text-white font-semibold rounded hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         :disabled="isAddingItem || isCartCheckedOut"
@@ -50,6 +51,7 @@ const addItemText = computed(() => {
         {{ addItemText }}
       </button>
       <button
+        aria-label="Clear cart"
         data-testid="btn-clear-cart"
         class="px-10 py-2.5 bg-brand-pink text-white font-semibold rounded hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         :disabled="isCartEmpty || isCartCheckedOut"

@@ -29,6 +29,7 @@ const cartItemTotal = computed((): string => {
         >
         <button
           data-testid="btn-delete"
+          aria-label="Remove item"
           @click="deleteCartItem(props.cartItem.product.id)"
         >
           <img
@@ -63,6 +64,7 @@ const cartItemTotal = computed((): string => {
           <button
             class="w-7 h-7 border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             :disabled="props.cartItem.quantity <= 1"
+            aria-label="Decrease quantity"
             data-testid="btn-decrement"
             @click="updateCartItemQuantity(props.cartItem.product.id, QuantityActions.decrement)"
           >
@@ -76,6 +78,7 @@ const cartItemTotal = computed((): string => {
           </span>
           <button
             class="w-7 h-7 border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
+            aria-label="Increase quantity"
             data-testid="btn-increment"
             @click="updateCartItemQuantity(props.cartItem.product.id, QuantityActions.increment)"
           >

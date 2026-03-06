@@ -8,7 +8,7 @@ const store = useCartStore();
 const { subTotal, vat, shipping, cartTotal, isCartCheckedOut } = storeToRefs(store);
 const { onCheckout } = store;
 
-const isProccedToCheckOutDisabled = computed(() => {
+const isProceedToCheckoutDisabled = computed(() => {
   return !subTotal.value || !shipping.value;
 });
 
@@ -50,8 +50,9 @@ const isProccedToCheckOutDisabled = computed(() => {
       <button
         v-else 
         data-testid="btn-checkout"
+        aria-label="Checkout"
         class="w-full py-3 bg-brand-green border-t border-slate-200 text-white text-sm rounded hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed font-bold"
-        :disabled="isProccedToCheckOutDisabled"
+        :disabled="isProceedToCheckoutDisabled"
         @click="onCheckout"
       >
         Proceed To Checkout

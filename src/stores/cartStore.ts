@@ -34,7 +34,7 @@ export const useCartStore = defineStore('cart', () => {
     // actions
     const fetchCartItems = async () => {
         try {
-            const data: Product[] = await fetchProducts();
+            const data = await fetchProducts() ?? [];
             cartItems.value = data?.map((product): CartItem => {
                 return { product, quantity: 1 };
             });
@@ -47,17 +47,17 @@ export const useCartStore = defineStore('cart', () => {
     const createCartItem = async () => {
         isAddingItem.value = true;
         try {
-            await new Promise(resolve => setTimeout(resolve, 1000)); // 1s delay timer to stop repated inserts
+            await new Promise(resolve => setTimeout(resolve, 1000)); // 1s delay timer to stop repeated inserts
             const data: Product = await createProduct(
                 {
                     title: 'Ut diam consequat',
                     price: Math.floor(Math.random() * 100) + 1,
                     category: 'XL',
                     description: 'none',
-                    image: Math.floor(Math.random() * 2) === 1 ? './images/bag.png' : './images/braclet.png'
+                    image: Math.floor(Math.random() * 2) === 1 ? '/images/bag.png' : '/images/braclet.png'
                 }
             );
-            data.id = Date.now(); // just generatnig unique id for each product as api doesn't return it
+            data.id = Date.now(); // just generating unique id for each product as api doesn't return it
             cartItems.value.push({ product: data, quantity: 1 });
         } catch {
             error.value = 'Failed to create';
