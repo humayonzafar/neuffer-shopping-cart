@@ -8,18 +8,15 @@ import ShippingCalculator from './components/ShippingCalculator.vue';
 <template>
   <div class="min-h-screen bg-white">
     <div class="max-w-6xl mx-auto px-6 py-12">
-
       <div class="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10 items-start">
-
         <section>
           <CartItemList />
         </section>
 
         <aside class="flex flex-col gap-6">
-           <CartSummary />
-           <ShippingCalculator />
+          <CartSummary />
+          <ShippingCalculator />
         </aside>
-
       </div>
     </div>
   </div>

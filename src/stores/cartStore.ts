@@ -30,7 +30,6 @@ export const useCartStore = defineStore('cart', () => {
         return !cartItems.value.length;
     });
 
-
     // actions
     const fetchCartItems = async () => {
         try {
@@ -38,13 +37,12 @@ export const useCartStore = defineStore('cart', () => {
             cartItems.value = data?.map((product): CartItem => {
                 return { product, quantity: 1 };
             });
-        } catch (e) {
+        } catch {
             error.value = 'Failed to fetch';
         } finally {
             loading.value = false;
         }
     };
-
     const createCartItem = async () => {
         isAddingItem.value = true; 
         try {
@@ -60,23 +58,20 @@ export const useCartStore = defineStore('cart', () => {
             );
             data.id = Date.now(); // just generatnig unique id for each product as api doesn't return it
             cartItems.value.push({ product: data, quantity: 1 });
-        } catch (e) {
+        } catch {
             error.value = 'Failed to create';
         } finally {
            isAddingItem.value = false;
         }
-    };
-
+    }
     const deleteCartItem = (id: number) => {
         cartItems.value = cartItems.value.filter(item =>
             item.product.id !== id
         )
     }
-
     const clearCart = (): void => {
         cartItems.value = [];
     }
-    
     const onCheckout = (): void => {
         isCartCheckedOut.value = true;
         clearCart();
