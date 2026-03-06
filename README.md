@@ -45,6 +45,14 @@ npm run dev
 | `npm test` | Run tests in watch mode |
 | `npm run lint` | Run ESLint |
 
+## CI
+
+GitHub Actions runs on every push and pull request to `main`:
+
+1. **Run ESLint** — checks code style
+2. **Run tests** — runs the full Vitest suite
+3. **Build project** — type-checks and produces a production build
+
 ## Testing
 
 Run all tests once:
