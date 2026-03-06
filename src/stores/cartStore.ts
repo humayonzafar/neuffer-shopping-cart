@@ -35,7 +35,7 @@ export const useCartStore = defineStore('cart', () => {
     const fetchCartItems = async () => {
         try {
             const data = await fetchProducts() ?? [];
-            cartItems.value = data?.map((product): CartItem => {
+            cartItems.value = data.map((product): CartItem => {
                 return { product, quantity: 1 };
             });
         } catch {

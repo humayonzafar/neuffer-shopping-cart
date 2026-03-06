@@ -8,9 +8,7 @@ const store = useCartStore();
 const { fetchCartItems, createCartItem, clearCart } = store;
 const { cartItems, isCartEmpty, isAddingItem, isCartCheckedOut } = storeToRefs(store);
 
-onMounted(() => {
-  fetchCartItems();
-});
+onMounted(fetchCartItems);
 
 const addItemText = computed(() => {
   return isAddingItem.value ? 'Adding...' : 'Add Item';
