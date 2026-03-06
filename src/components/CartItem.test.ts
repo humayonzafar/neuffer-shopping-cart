@@ -3,6 +3,7 @@ import { createPinia, type Pinia } from 'pinia';
 import { beforeEach, describe, expect, it } from 'vitest';
 import CartItem from './CartItem.vue';
 import { makeCartItem } from '../tests/fixtures'
+import { useCartStore } from '../stores/cartStore';
 
 describe('CartItem', () => {
     let pinia: Pinia;
@@ -12,9 +13,11 @@ describe('CartItem', () => {
     })
 
     const mountCartItem = (quantity = 1) => {
+        const store = useCartStore(pinia);
+        store.cartItems = [makeCartItem(1, 10, quantity)];
         return mount(CartItem, {
             props: {
-                cartItem: makeCartItem(1, 10, quantity),
+                cartItem: store.cartItems[0]!,
             },
             global: {
                 plugins: [pinia],

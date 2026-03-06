@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { QuantityActions } from "../types";
-import type { CartItem, QuantityAction } from '../types';
+import type { CartItem } from '../types';
 import { formatPrice } from '../utils';
 import closeIcon from '@/assets/icons/close.svg'
 import { useCartStore } from '../stores/cartStore';
@@ -10,14 +10,7 @@ const props = defineProps<{
   cartItem: CartItem
 }>();
 
-const { deleteCartItem } = useCartStore();
-const updateCartItemQuantity = (action: QuantityAction): void => {
-  if (action === QuantityActions.decrement && props.cartItem.quantity > 1) {
-    props.cartItem.quantity -= 1;
-  } else if (action === QuantityActions.increment && props.cartItem.quantity < 999) {
-    props.cartItem.quantity += 1;
-  }
-}
+const { deleteCartItem, updateCartItemQuantity } = useCartStore();
 
 const cartItemTotal = computed((): string => {
   return formatPrice(props.cartItem.product.price * props.cartItem.quantity);
@@ -71,7 +64,7 @@ const cartItemTotal = computed((): string => {
             class="w-7 h-7 border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             :disabled="props.cartItem.quantity <= 1"
             data-testid="btn-decrement"
-            @click="updateCartItemQuantity(QuantityActions.decrement)"
+            @click="updateCartItemQuantity(props.cartItem.product.id, QuantityActions.decrement)"
           >
             −
           </button>
@@ -84,7 +77,7 @@ const cartItemTotal = computed((): string => {
           <button
             class="w-7 h-7 border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
             data-testid="btn-increment"
-            @click="updateCartItemQuantity(QuantityActions.increment)"
+            @click="updateCartItemQuantity(props.cartItem.product.id, QuantityActions.increment)"
           >
             +
           </button>

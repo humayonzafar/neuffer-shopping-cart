@@ -34,13 +34,15 @@ const addItemText = computed(() => {
     />
     <p
       v-if="isCartEmpty"
+      data-testid="empty-cart-message"
       class="flex justify-center mt-6"
     >
       Cart is empty...!
     </p>
 
-    <div class="flex items-center justify-between mt-6 flex-wrap gap-2">
+    <div class="flex items-center justify-center sm:justify-between mt-6 flex-wrap gap-2">
       <button
+        data-testid="btn-add-item"
         class="px-10 py-2.5 bg-brand-green text-white font-semibold rounded hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         :disabled="isAddingItem || isCartCheckedOut"
         @click="createCartItem"
@@ -48,6 +50,7 @@ const addItemText = computed(() => {
         {{ addItemText }}
       </button>
       <button
+        data-testid="btn-clear-cart"
         class="px-10 py-2.5 bg-brand-pink text-white font-semibold rounded hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         :disabled="isCartEmpty || isCartCheckedOut"
         @click="clearCart"

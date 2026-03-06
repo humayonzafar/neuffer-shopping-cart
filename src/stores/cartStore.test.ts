@@ -95,5 +95,30 @@ describe('cartStore', () => {
 
             expect(store.cartItems).toHaveLength(0);
         });
+
+        it('updateCartItemQuantity increments quantity', () => {
+            const { store, seedCart } = setup();
+            seedCart(makeCartItem(1, 10, 2));
+            store.updateCartItemQuantity(1, 'increment');
+
+            expect(store.cartItems[0]!.quantity).toBe(3);
+        });
+
+        it('updateCartItemQuantity decrements quantity', () => {
+            const { store, seedCart } = setup();
+            seedCart(makeCartItem(1, 10, 3));
+            store.updateCartItemQuantity(1, 'decrement');
+
+            expect(store.cartItems[0]!.quantity).toBe(2);
+        });
+
+        it('updateCartItemQuantity does not decrement below 1', () => {
+            const { store, seedCart } = setup();
+            seedCart(makeCartItem(1, 10, 1));
+            store.updateCartItemQuantity(1, 'decrement');
+
+            expect(store.cartItems[0]!.quantity).toBe(1);
+        });
+
     });
 });

@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { fetchProducts, createProduct } from '../api/products';
-import type { CartItem, Product } from '../types';
+import type { CartItem, Product, QuantityAction } from '../types';
+import { QuantityActions } from '../types';
 
 export const useCartStore = defineStore('cart', () => {
 
@@ -44,7 +45,7 @@ export const useCartStore = defineStore('cart', () => {
         }
     };
     const createCartItem = async () => {
-        isAddingItem.value = true; 
+        isAddingItem.value = true;
         try {
             await new Promise(resolve => setTimeout(resolve, 1000)); // 1s delay timer to stop repated inserts
             const data: Product = await createProduct(
@@ -61,7 +62,18 @@ export const useCartStore = defineStore('cart', () => {
         } catch {
             error.value = 'Failed to create';
         } finally {
-           isAddingItem.value = false;
+            isAddingItem.value = false;
+        }
+    }
+    const updateCartItemQuantity = (id: number, action: QuantityAction): void => {
+        const item = cartItems.value.find(item => item.product.id === id);
+        if (!item) {
+            return;
+        }
+        if (action === QuantityActions.decrement && item.quantity > 1) {
+            item.quantity -= 1;
+        } else if (action === QuantityActions.increment && item.quantity < 99) {
+            item.quantity += 1;
         }
     }
     const deleteCartItem = (id: number) => {
@@ -78,7 +90,7 @@ export const useCartStore = defineStore('cart', () => {
     }
 
     return {
-        cartItems, fetchCartItems, createCartItem, deleteCartItem, clearCart, onCheckout, isCartCheckedOut,
+        cartItems, fetchCartItems, createCartItem, deleteCartItem, updateCartItemQuantity, clearCart, onCheckout, isCartCheckedOut,
         subTotal, shipping, vat, cartTotal,
         isCartEmpty, isAddingItem
     };

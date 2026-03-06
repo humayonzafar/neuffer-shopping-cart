@@ -42,6 +42,7 @@ const { form, isCalculateShippingButtonDisabled , calculateShipping } = useShipp
       </div>
 
       <button
+        data-testid="btn-calculate-shipping"
         :disabled="isCalculateShippingButtonDisabled"
         class="px-6 py-2.5 bg-brand-pink text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed font-semibold rounded hover:opacity-90 transition-opacity"
         @click="calculateShipping"
