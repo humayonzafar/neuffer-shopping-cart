@@ -11,7 +11,7 @@ export const useCartStore = defineStore('cart', () => {
     const loading = ref(true);
     const error = ref<string | null>(null);
     const isAddingItem = ref(false);
-    const isCartChecedkOut = ref(false);
+    const isCartCheckedOut = ref(false);
 
     // getters
     const subTotal = computed((): number => {
@@ -44,6 +44,7 @@ export const useCartStore = defineStore('cart', () => {
             loading.value = false;
         }
     };
+
     const createCartItem = async () => {
         isAddingItem.value = true; 
         try {
@@ -65,21 +66,24 @@ export const useCartStore = defineStore('cart', () => {
            isAddingItem.value = false;
         }
     };
+
     const deleteCartItem = (id: number) => {
         cartItems.value = cartItems.value.filter(item =>
             item.product.id !== id
         )
     }
+
     const clearCart = (): void => {
         cartItems.value = [];
     }
+    
     const onCheckout = (): void => {
-        isCartChecedkOut.value = true;
+        isCartCheckedOut.value = true;
         clearCart();
     }
 
     return {
-        cartItems, fetchCartItems, createCartItem, deleteCartItem, clearCart, onCheckout, isCartChecedkOut,
+        cartItems, fetchCartItems, createCartItem, deleteCartItem, clearCart, onCheckout, isCartCheckedOut,
         subTotal, shipping, vat, cartTotal,
         isCartEmpty, isAddingItem
     };

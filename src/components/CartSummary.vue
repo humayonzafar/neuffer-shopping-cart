@@ -5,7 +5,7 @@ import { formatPrice } from '../utils';
 import { computed } from 'vue';
 
 const store = useCartStore();
-const { subTotal, vat, shipping, cartTotal, isCartChecedkOut } = storeToRefs(store);
+const { subTotal, vat, shipping, cartTotal, isCartCheckedOut } = storeToRefs(store);
 const { onCheckout } = store;
 
 const isProccedToCheckOutDisabled = computed(() => {
@@ -39,10 +39,13 @@ const isProccedToCheckOutDisabled = computed(() => {
         <span class="text-navy-700">{{ formatPrice(cartTotal) }}</span>
       </div>
 
-      <p v-if="isCartChecedkOut" class="text-center text-brand-green font-semibold py-3">
+      <p v-if="isCartCheckedOut"
+      data-testid="checkout-success-message"
+      class="text-center text-brand-green font-semibold py-3">
         Order placed successfully!
       </p>
-      <button v-else
+      <button v-else 
+        data-testid="btn-checkout"
         class="w-full py-3 bg-brand-green border-t border-slate-200 text-white text-sm rounded hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed font-bold"
         :disabled="isProccedToCheckOutDisabled" @click="onCheckout">
         Proceed To Checkout

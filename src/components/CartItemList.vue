@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia';
 
 const store = useCartStore();
 const { fetchCartItems, createCartItem, clearCart } = store;
-const { cartItems, isCartEmpty, isAddingItem, isCartChecedkOut } = storeToRefs(store);
+const { cartItems, isCartEmpty, isAddingItem, isCartCheckedOut } = storeToRefs(store);
 
 onMounted(() => {
   fetchCartItems();
@@ -34,12 +34,12 @@ const addItemText = computed(() => {
     <div class="flex items-center justify-between mt-6">
       <button
         class="px-10 py-2.5 bg-brand-green text-white font-semibold rounded hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        :disabled="isAddingItem || isCartChecedkOut" @click="createCartItem">
+        :disabled="isAddingItem || isCartCheckedOut" @click="createCartItem">
         {{ addItemText }}
       </button>
       <button
         class="px-10 py-2.5 bg-brand-pink text-white font-semibold rounded hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        :disabled="isCartEmpty || isCartChecedkOut" @click="clearCart">
+        :disabled="isCartEmpty || isCartCheckedOut" @click="clearCart">
         Clear Cart
       </button>
     </div>
