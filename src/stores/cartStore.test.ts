@@ -1,12 +1,16 @@
 import { createPinia, setActivePinia } from 'pinia';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useCartStore } from './cartStore';
 import { makeCartItem } from '../tests/fixtures';
 import type { CartItem } from '../types';
+import { fetchProducts, createProduct } from '../api/products';
+
+vi.mock('../api/products');
 
 describe('cartStore', () => {
     beforeEach(() => {
         setActivePinia(createPinia());
+        vi.clearAllMocks();
     });
 
     const setup = () => {
@@ -121,4 +125,46 @@ describe('cartStore', () => {
         });
 
     });
+
+    describe('fakestoreAPI', () => {
+
+        it('fetchCartItems populates cartItems on success', async () => {
+            const { store } = setup();
+            vi.mocked(fetchProducts).mockResolvedValueOnce([
+                { id: 1, title: 'Test', price: 10, category: 'x', description: 'x', image: 'x' }
+            ]);
+            await store.fetchCartItems();
+
+            expect(store.cartItems).toHaveLength(1);
+            expect(store.cartItems[0]!.product.id).toBe(1);
+            expect(store.cartItems[0]!.quantity).toBe(1);
+        })
+
+        it('createCartItem adds item to cartItems on success', async () => {
+            const { store } = setup()
+            vi.mocked(createProduct).mockResolvedValueOnce({ id: 99, title: 'New', price: 25, category: 'x', description: 'x', image: 'x', });
+            await store.createCartItem()
+           
+            expect(store.cartItems).toHaveLength(1);
+            expect(store.cartItems[0]!.product.title).toBe('New'); 
+            expect(store.cartItems[0]!.quantity).toBe(1);
+        })
+
+        it('fetchCartItems sets error when API fails', async () => {
+            const { store } = setup();
+            vi.mocked(fetchProducts).mockRejectedValueOnce(new Error());
+            await store.fetchCartItems();
+
+            expect(store.error).toBeTruthy();
+        });
+
+        it('createCartItem sets error when API fails', async () => {
+            const { store } = setup();
+            vi.mocked(createProduct).mockRejectedValueOnce(new Error());
+            await store.createCartItem();
+
+            expect(store.error).toBeTruthy();
+        });
+    });
+
 });

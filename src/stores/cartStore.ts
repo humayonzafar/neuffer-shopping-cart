@@ -33,18 +33,21 @@ export const useCartStore = defineStore('cart', () => {
 
     // actions
     const fetchCartItems = async () => {
+        error.value = null;
+        loading.value = true;
         try {
             const data = await fetchProducts() ?? [];
             cartItems.value = data.map((product): CartItem => {
                 return { product, quantity: 1 };
             });
         } catch {
-            error.value = 'Failed to fetch';
+            error.value = 'Something went wrong';
         } finally {
             loading.value = false;
         }
     };
     const createCartItem = async () => {
+        error.value = null;
         isAddingItem.value = true;
         try {
             await new Promise(resolve => setTimeout(resolve, 1000)); // 1s delay timer to stop repeated inserts
@@ -92,7 +95,7 @@ export const useCartStore = defineStore('cart', () => {
     return {
         cartItems, fetchCartItems, createCartItem, deleteCartItem, updateCartItemQuantity, clearCart, onCheckout, isCartCheckedOut,
         subTotal, shipping, vat, cartTotal,
-        isCartEmpty, isAddingItem
+        isCartEmpty, isAddingItem, error
     };
 
 })

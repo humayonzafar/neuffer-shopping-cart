@@ -65,4 +65,12 @@ describe('CartItemList', () => {
         expect(spy).toHaveBeenCalledOnce();
     });
 
+    it('shows error message when store has an error', async () => {
+        const { wrapper, store } = mountCartItemList();
+        store.error = 'Something went wrong';
+        await nextTick();
+
+        expect(wrapper.find('[data-testid="error-message"]').exists()).toBe(true);
+    });
+
 });

@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia';
 
 const store = useCartStore();
 const { fetchCartItems, createCartItem, clearCart } = store;
-const { cartItems, isCartEmpty, isAddingItem, isCartCheckedOut } = storeToRefs(store);
+const { cartItems, isCartEmpty, isAddingItem, isCartCheckedOut, error } = storeToRefs(store);
 
 onMounted(fetchCartItems);
 
@@ -31,11 +31,18 @@ const addItemText = computed(() => {
       :cart-item="cartItem"
     />
     <p
-      v-if="isCartEmpty"
+      v-if="isCartEmpty && !error"
       data-testid="empty-cart-message"
       class="flex justify-center mt-6"
     >
       Cart is empty...!
+    </p>
+    <p
+      v-if="error"
+      data-testid="error-message"
+      class="flex justify-center mt-6 text-red-500"
+    >
+      {{ error }}
     </p>
 
     <div class="flex items-center justify-center sm:justify-between mt-6 flex-wrap gap-2">
